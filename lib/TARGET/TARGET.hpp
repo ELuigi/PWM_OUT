@@ -8,7 +8,8 @@
 typedef struct PWM_OUT_PIN PWM_OUT_PIN;
 struct PWM_OUT_PIN
 {
-  uint16_t GPIO_PPIN;
+  uint16_t GPIO_PIN;
+  GPIO_TypeDef * GPIO;
   TIM_TypeDef* TIMER;
   uint32_t CHANNEL;  
 };
@@ -16,7 +17,7 @@ struct PWM_OUT_PIN
 //liste of available pwm output
 
 //creation of all structs
-PWM_OUT_PIN pinout1 = {GPIO_PIN_6,TIM3,TIM_CHANNEL_1};
+PWM_OUT_PIN pinout1 = {GPIO_PIN_6,GPIOA,TIM3,TIM_CHANNEL_1};
 PWM_OUT_PIN pinout2;
 PWM_OUT_PIN pinout3;
 PWM_OUT_PIN pinout4;
