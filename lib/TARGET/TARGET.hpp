@@ -17,10 +17,10 @@ struct PWM_OUT_PIN
 //liste of available pwm output
 
 //creation of all structs
-PWM_OUT_PIN pinout1 = {GPIO_PIN_6,GPIOA,TIM3,TIM_CHANNEL_1};
-PWM_OUT_PIN pinout2;
-PWM_OUT_PIN pinout3;
-PWM_OUT_PIN pinout4;
+
+//PWM_OUT_PIN pinout2;
+//PWM_OUT_PIN pinout3;
+//PWM_OUT_PIN pinout4;
 
 
 
