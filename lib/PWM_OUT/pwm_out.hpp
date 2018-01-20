@@ -8,6 +8,7 @@ class PWM_OUT
 
 private:
     TIM_HandleTypeDef* htim;
+    PWM_OUT_PIN outputpin;
 public:
 
 PWM_OUT(PWM_OUT_PIN Pinout);
