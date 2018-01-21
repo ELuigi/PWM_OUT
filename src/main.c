@@ -1,6 +1,6 @@
 #include "stm32f1xx_hal.h"
-//#include "PWM_OUT.hpp"
-//#include "TARGET.hpp"
+#include "PWM_OUT.h"
+#include "TARGET.h"
 
 
 void Init_PWM(TIM_HandleTypeDef *htimx);
@@ -9,8 +9,8 @@ void SystemClock_Config(void);
 
 int main(void)
 {
-  TIM_HandleTypeDef htim2;
-//PWM_OUT_PIN pinout1 ={GPIO_PIN_6,GPIOA,TIM3,TIM_CHANNEL_1};
+TIM_HandleTypeDef htim2;
+PWM_OUT_PIN pinout1 ={GPIO_PIN_6,GPIOA,TIM3,TIM_CHANNEL_1};
 
 HAL_Init();
 SystemClock_Config();
@@ -20,11 +20,14 @@ Init_PWM(&htim2);
 HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
 __HAL_TIM_SET_AUTORELOAD(&htim2,500);
 
-//PWM_OUT PWM1(pinout1,&htim2);
-//while(1)
-//{
-//PWM1.SetDutyCycle(490);
-//}
+PWMOut_Init(pinout1,&htim2);
+while(1)
+{
+SetDutyCycle(pinout1,&htim2,490);
+HAL_Delay(499);
+SetDutyCycle(pinout1,&htim2,200);
+HAL_Delay(499);
+}
 uint16_t duty_cycle =HAL_TIM_ReadCapturedValue(&htim2,TIM_CHANNEL_1);
 
   while(1)

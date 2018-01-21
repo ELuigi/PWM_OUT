@@ -1,13 +1,10 @@
-#include "pwm_out.hpp"
+#include "pwm_out.h"
 
 
-PWM_OUT::PWM_OUT(PWM_OUT_PIN Pinout,TIM_HandleTypeDef* htim2){
-    outputpin = Pinout;
-    htim=htim2;
+void PWMOut_Init(PWM_OUT_PIN Pinout,TIM_HandleTypeDef* htim){
     TIM_OC_InitTypeDef sConfigOC;
     GPIO_InitTypeDef GPIO_InitStruct;
-    htim->
-    htim->Instance = outputpin.TIMER;
+    htim->Instance = Pinout.TIMER;
     htim->Init.Prescaler = 499;
     htim->Init.CounterMode = TIM_COUNTERMODE_UP;
     htim->Init.Period = 999;
@@ -20,7 +17,7 @@ PWM_OUT::PWM_OUT(PWM_OUT_PIN Pinout,TIM_HandleTypeDef* htim2){
     sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
     sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
 
-    HAL_TIM_PWM_ConfigChannel(htim,&sConfigOC,outputpin.CHANNEL);
+    HAL_TIM_PWM_ConfigChannel(htim,&sConfigOC,Pinout.CHANNEL);
 
     if(htim->Instance==TIM3) {
         __TIM3_CLK_ENABLE();
@@ -28,17 +25,17 @@ PWM_OUT::PWM_OUT(PWM_OUT_PIN Pinout,TIM_HandleTypeDef* htim2){
         /**TIM3 GPIO Configuration
         PA6     ------> TIM3_CH1
         */
-        GPIO_InitStruct.Pin = outputpin.GPIO_PIN;
+        GPIO_InitStruct.Pin = Pinout.GPIO_PIN;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
-        HAL_GPIO_Init(outputpin.GPIO, &GPIO_InitStruct);
+        HAL_GPIO_Init(Pinout.GPIO, &GPIO_InitStruct);
     }
-    HAL_TIM_PWM_Start(htim,outputpin.CHANNEL);
+    HAL_TIM_PWM_Start(htim,Pinout.CHANNEL);
     __HAL_TIM_SET_AUTORELOAD(htim,500);
 }
 
-void PWM_OUT::SetDutyCycle(uint16_t duty_cycle)
+void SetDutyCycle(PWM_OUT_PIN Pinout,TIM_HandleTypeDef* htim,uint16_t duty_cycle)
 {
-     __HAL_TIM_SET_COMPARE(htim,outputpin.CHANNEL,duty_cycle);
+     __HAL_TIM_SET_COMPARE(htim,Pinout.CHANNEL,duty_cycle);
 }
