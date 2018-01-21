@@ -11,7 +11,7 @@ private:
     PWM_OUT_PIN outputpin;
 public:
 
-PWM_OUT(PWM_OUT_PIN Pinout);
+PWM_OUT(PWM_OUT_PIN Pinout,TIM_HandleTypeDef* htim2);
 void SetFrequency(uint16_t Freq);
 void SetDutyCycle(uint16_t duty_cycle);
 };

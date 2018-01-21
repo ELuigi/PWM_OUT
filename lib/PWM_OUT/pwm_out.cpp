@@ -1,11 +1,12 @@
 #include "pwm_out.hpp"
 
 
-PWM_OUT::PWM_OUT(PWM_OUT_PIN Pinout){
+PWM_OUT::PWM_OUT(PWM_OUT_PIN Pinout,TIM_HandleTypeDef* htim2){
     outputpin = Pinout;
+    htim=htim2;
     TIM_OC_InitTypeDef sConfigOC;
     GPIO_InitTypeDef GPIO_InitStruct;
-
+    htim->
     htim->Instance = outputpin.TIMER;
     htim->Init.Prescaler = 499;
     htim->Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -41,4 +42,3 @@ void PWM_OUT::SetDutyCycle(uint16_t duty_cycle)
 {
      __HAL_TIM_SET_COMPARE(htim,outputpin.CHANNEL,duty_cycle);
 }
-
