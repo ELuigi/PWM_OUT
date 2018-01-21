@@ -15,12 +15,12 @@ PWM_OUT_PIN pinout1 ={GPIO_PIN_6,GPIOA,TIM3,TIM_CHANNEL_1};
 HAL_Init();
 SystemClock_Config();
 __GPIOA_CLK_ENABLE();
-HAL_TIM_PWM_MspInit(&htim2);
-Init_PWM(&htim2);
+PWMOut_Init(pinout1,&htim2);
+
 HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
 __HAL_TIM_SET_AUTORELOAD(&htim2,500);
 
-PWMOut_Init(pinout1,&htim2);
+
 while(1)
 {
 SetDutyCycle(pinout1,&htim2,490);
@@ -46,44 +46,7 @@ uint16_t duty_cycle =HAL_TIM_ReadCapturedValue(&htim2,TIM_CHANNEL_1);
 
 }
 
-void Init_PWM(TIM_HandleTypeDef *htimx)
-{
 
-  //TIM3_CHANEL 1 --> PA6
-  TIM_OC_InitTypeDef sConfigOC;
-
-  htimx->Instance = TIM3;
-  htimx->Init.Prescaler = 499;
-  htimx->Init.CounterMode = TIM_COUNTERMODE_UP;
-  htimx->Init.Period = 999;
-  htimx->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  HAL_TIM_PWM_Init(htimx);
-
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 499;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  HAL_TIM_PWM_ConfigChannel(htimx,&sConfigOC,TIM_CHANNEL_1);
-
-
-}
-
-void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef* htim_base) {
-  GPIO_InitTypeDef GPIO_InitStruct;
-  if(htim_base->Instance==TIM3) {
-    __TIM3_CLK_ENABLE();
-
-    //TIM3 GPIO Configuration
-    //PA6     ------> TIM3_CH1
-
-
-    GPIO_InitStruct.Pin = GPIO_PIN_6;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-  }
-}
 
 void SystemClock_Config(void)
 {
